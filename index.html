@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
+    <title>Prinder : pour qui voter en 2022 ?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="vue-app">
+        <h1>🗳️ Prinder : pour qui voter en 2022 ? 🇫🇷</h1>
+        <template v-if="step === 'start'">
+            <p style="font-size: 130%;">
+                ✔ Lire les programmes des candidats, ça vous soûle ?<br>
+                ✔ Vous préférez vous concentrer sur des idées plutôt que sur les candidats ?<br>
+                <strong>Vous avez bien raison !</strong> (même si vous savez pertinemment que les idées prononcées ne sont jamais toutes respectées…)
+            </p>
+            <button type="button" @click="go" style="background-color: aquamarine;">C'est parti !</button>
+            <h2>À quoi sert ce site ?</h2>
+            <p>
+                J'ai épluché les programmes de la Présidentielle 2022 pour vous, en me basant sur les papiers que nous avons tous reçus dans notre boîte aux lettres. J'ai isolé les idées, à vous de répondre à ce petit questionnaire.<br>
+                À la fin, ce site vous livrera quels sont les candidats de la Présidentielle qui matchent le mieux avec vous.
+            </p>
+            <details>
+                <summary>Qui se présente en 2022 ?</summary>
+                <div class="cards">
+                    <div class="card" v-for="candidate in candidates">
+                        <img :src="candidate.logo" :alt="`Logo du parti de ${candidate.party}`" class="card__thumb">
+                        <div class="card__body">
+                            <div class="media">
+                                <img :src="candidate.photo" :alt="`Photo de ${candidate.name}`" class="media__thumb">
+                                <div class="media__title" v-text="candidate.name"></div>
+                                <div class="media__details">
+                                    <span class="tag" :style="{'--color': candidate.color}" v-text="candidate.party"></span><br>
+                                    <a style="display: inline-block; margin-top: 5px;" :href="candidate.link" target="_blank" title="S'ouvre dans un nouvel onglet">Visiter le site du parti</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <h2>Une dernière chose avant de commencer…</h2>
+            <p>
+                Aucune donnée sur ce site n'est collectée, pas même les stats de fréquentation. Il n'y a aucune publicité et ce site est hébergé par mon serveur perso. Les sources sont publiques <a href="https://github.com/christophermh44/prinder-2022">sur GitHub</a>.<br>
+                Si vous pensez qu'il y a un problème, n'hésitez pas à m'envoyer un tweet <a href="https://twitter.com/krisdeschacals" target="_blank" title="S'ouvre dans un nouvel onglet">@KrisDesChacals</a>, mais je ne garantie pas d'y repondre.
+            </p>
+            <details>
+                <summary>Plus de détails sur la méthode de calcul</summary>
+                <p>
+                    Pour chaque idée qui vous sera présentée, vous pouvez donner les réponses suivantes :
+                </p>
+                <ul>
+                    <li v-for="answer in answers"><span v-text="`${answer.label} ${answer.text}`"></span></li>
+                </ul>
+                <p>
+                    Ces réponses représentent l'opinion que vous avez sur l'idée proposée.
+                </p>
+                <ul>
+                    <li>Si vous indiquez une opinion favorable à une idée donnée, cela ajoute des "points" au candidat (ou aux candidats) qui propose cette idée.</li>
+                    <li>Si, au contraire, vous indiquez une opinion défavorable, le (ou les) candidat qui propose cette idée se voit retirer des points.</li>
+                    <li>Une réponse neutre ne change rien au score du (ou des) candidat concerné.</li>
+                </ul>
+                <p>
+                    Une fois que vous avez répondu à toutes les questions :
+                </p>
+                <ol>
+                    <li>Puisque les scores des candidats peuvent être négatifs, on rajoute suffisamment de points à tous les candidats (le même nombre pour chacun d'entre eux), afin que le score le plus bas soit ramené à 0.</li>
+                    <li>Puis, étant donné que le nombre d'idées figurant sur les programmes officiels diffèrent d'un candidat à un autre, un ratio est appliqué afin de faire en sorte que la note maximale soit la même pour tous les candidats.</li>
+                    <li>Enfin, on transforme les notes obtenues en pourcentage. Plus ce pourcentage est élevé, plus le candidat trouvera grâce à vos yeux.</li>
+                </ol>
+                <p>
+                    En cas d'ex-æquo, les candidats qui ont obtenu le même score sont mélangés aléatoirement afin que ce test n'induise pas de biais inutiles à cause de la présentation des résultats.
+                </p>
+            </details>
+            <p>
+                <em><strong>NB : </strong> Il subsiste encore quelques biais possibles sur le résultat qui vous sera donné. Notamment si un candidat partage une idée politique mentionnée dans ce questionnaire mais ne l'a pas fait figurer sur son programme. Gardez donc à l'esprit que le résultat qui vous sera donné est une tendance, mais il appartient à vous seul de faire votre choix final.</em>
+            </p>
+        </template>
+        <template v-else-if="step === 'questions'">
+            <h2>C'est à vous !</h2>
+            <dialog ref="dialog">
+                <form method="dialog">
+                    <template v-if="dialog">
+                        <h3 v-text="dialog.question"></h3>
+                        <p v-text="dialog.details"></p>
+                        <a :href="dialog.link" target="_blank">En savoir plus (s'ouvre dans un nouvel onglet)</a>
+                        <details ref="details">
+                            <summary>Spoil : qui promeut cette mesure dans son programme ?</summary>
+                            <ul>
+                                <li v-for="candidate in dialog.candidates">
+                                    <span v-text="candidates.find(c => c.id === candidate).name"></span>
+                                    <span class="tag" :style="{'--color': candidates.find(c => c.id === candidate).color}" v-text="candidates.find(c => c.id === candidate).party"></span>
+                                </li>
+                            </ul>
+                        </details>
+                    </template>
+                    <menu>
+                        <button value="cancel">Fermer</button>
+                    </menu>
+                </form>
+            </dialog>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="70">Idée</th>
+                        <th width="30">Évaluation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(question, index) in questions">
+                        <td>
+                            <strong v-text="question.question"></strong><br>
+                            <button type="button" @click="showDetails(question)">Plus d'informations</button>
+                        </td>
+                        <td style="display: flex; flex-direction: column; justify-content: center;">
+                            <div style="align-content: stretch; display: flex; flex-direction: column;">
+                                <input style="margin-bottom: 0; padding-bottom: 5px;" type="range" min="0" max="1" :step="1 / (answers.length - 1)" list="answers" v-model.number="question.answer">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px;">
+                                    <span v-for="answer in answers" v-text="answer.label"></span>
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <span v-text="answers.find(a => a.score === question.answer).label" style="margin-right: 5px;"></span>
+                                <span v-text="answers.find(a => a.score === question.answer).text"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <datalist id="answers">
+                <option v-for="answer in answers" :value="answer.score" :label="answer.label"></option>
+            </datalist>
+            <button type="button" @click="compute" style="background-color: aquamarine;">Évaluer le résultat</button>
+        </template>
+        <template v-else-if="step === 'finish'">
+            <h2>Tada ! Voici vos résultats :</h2>
+            <div class="results">
+                <div class="results__item result result--0">
+                    <div class="result__position" v-text="results[0].rank"></div>
+                    <img class="result__photo" :src="results[0].photo" alt="">
+                    <div class="result__details">
+                        <div class="result__name" v-text="results[0].name"></div>
+                        <img class="result__logo" :src="results[0].logo" alt="">
+                    </div>
+                </div>
+                <div class="results__item result result--1">
+                    <div class="result__position" v-text="results[1].rank"></div>
+                    <img class="result__photo" :src="results[1].photo" alt="">
+                    <div class="result__details">
+                        <div class="result__name" v-text="results[1].name"></div>
+                        <img class="result__logo" :src="results[1].logo" alt="">
+                    </div>
+                </div>
+                <div class="results__item result result--2">
+                    <div class="result__position" v-text="results[2].rank"></div>
+                    <img class="result__photo" :src="results[2].photo" alt="">
+                    <div class="result__details">
+                        <div class="result__name" v-text="results[2].name"></div>
+                        <img class="result__logo" :src="results[2].logo" alt="">
+                    </div>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="10"></th>
+                        <th width="35">Candidat</th>
+                        <th width="35">Parti</th>
+                        <th width="20">Affinité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="candidate in results">
+                        <th v-text="candidate.rank" style="text-align: center;"></th>
+                        <th v-text="candidate.name"></th>
+                        <td>
+                            <span class="tag" :style="{'--color': candidate.color}" v-text="candidate.party"></span>
+                        </td>
+                        <td style="align-items: center; display: flex; justify-content: space-between;">
+                            <meter min="0" max="100" :value="~~(candidate.percentage)" style="flex-grow: 1; margin-right: 10px;"></meter>
+                            <span style="width: 40px; text-align: right;" v-text="`${~~(candidate.percentage)} %`"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" @click="step = 'start'">Revenir au début</button>
+        </template>
+    </main>
+    <script src="app.js" type="module"></script>
+</body>
+</html>

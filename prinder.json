@@ -1,0 +1,162 @@
+{
+    "candidates": [
+        {
+            "id": "nar",
+            "name": "Nathalie Arthaud",
+            "color": "187 0 0",
+            "party": "Lutte ouvrière",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "fas",
+            "name": "François Asselineau",
+            "color": "17 128 136",
+            "party": "Union populaire républicaine",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "nda",
+            "name": "Nicolas Dupont-Aignan",
+            "color": "0 130 196",
+            "party": "Debout la France",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "ahi",
+            "name": "Anne Hidalgo",
+            "color": "255 128 128",
+            "party": "Parti socialiste",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "yja",
+            "name": "Yannick Jadot",
+            "color": "0 192 0",
+            "party": "Europe Écologie Les Verts",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "jla",
+            "name": "Jean Lassalle",
+            "color": "38 196 236",
+            "party": "Résistons",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "mlp",
+            "name": "Marine Le Pen",
+            "color": "13 55 138",
+            "party": "Rassemblement national",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "jlm",
+            "name": "Jean-Luc Mélenchon",
+            "color": "204 36 67",
+            "party": "La France Insoumise",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "amo",
+            "name": "Arnaud Montebourg",
+            "color": "255 192 192",
+            "party": "L'Engagement",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "vpe",
+            "name": "Valérie Pécresse",
+            "color": "0 102 204",
+            "party": "Les Républicains",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "ppo",
+            "name": "Philippe Poutou",
+            "color": "187 0 0",
+            "party": "Nouveau Parti anticapitaliste",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "fro",
+            "name": "Fabien Roussel",
+            "color": "221 0 0",
+            "party": "Parti communiste français",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "awa",
+            "name": "Antoine Waechter",
+            "color": "119 255 119",
+            "party": "Mouvement écologiste indépendant",
+            "link": "https://perdu.com"
+        },
+        {
+            "id": "eze",
+            "name": "Éric Zemmour",
+            "color": "64 64 64",
+            "party": "Reconquête",
+            "link": "https://perdu.com"
+        }
+    ],
+    "answers": [
+        {
+            "label": "😡",
+            "text": "Pas du tout d'accord",
+            "score": 0
+        },
+        {
+            "label": "☹️",
+            "text": "Pas vraiment d'accord",
+            "score": 0.25
+        },
+        {
+            "label": "😐",
+            "text": "Neutre / Je ne sais pas",
+            "score": 0.5
+        },
+        {
+            "label": "🙂",
+            "text": "Plutôt d'accord",
+            "score": 0.75
+        },
+        {
+            "label": "😃",
+            "text": "Complètement d'accord",
+            "score": 1
+        }
+    ],
+    "default_answer": 0.5,
+    "questions": [
+        {
+            "question": "Le salaire minimum devrait être généralisé.",
+            "details": "Le salaire minimum est un revenu mensuel qui serait proposé à tous les français majeurs, sans condition.",
+            "link": "https://perdu.com",
+            "candidates": ["jlm"]
+        },
+        {
+            "question": "Les étrangers ne devraient pas avoir le droit du sol.",
+            "details": "Le droit du sol est un droit qui permet aux étrangers résidant en France depuis un certain nombre d'années d'acquérir la nationalité Française.",
+            "link": "https://perdu.com",
+            "candidates": ["mlp"]
+        },
+        {
+            "question": "La caisse des retraites doit disparaître.",
+            "details": "Le système des retraites actuel est un système dont les recettes sont générées par les cotisations des travailleurs et des employeurs. Ce budget est redistribué aux personnes retraitées en fonction des revenus de leur carrière.",
+            "link": "https://perdu.com",
+            "candidates": ["ema", "nsa"]
+        },
+        {
+            "question": "Le RIC doit être mis en place.",
+            "details": "Le RIC (Référendum d'Initiative Citoyenne) est une proposition de loi qui permet aux citoyens d'enclencher la mise en place d'un référendum sur une loi donnée si une pétition récolte suffisamment de signatures.",
+            "link": "https://perdu.com",
+            "candidates": ["jlm", "mlp"]
+        },
+        {
+            "question": "La France ne doit plus avoir recours à l'énergie nucléaire.",
+            "details": "L'énergie nucléaire est aujourd'hui la principale source d'énergie en France. Les défenseurs du nucléaire expliquent que cette énergie décarbonée est une solution qui offre à la fois un très bon rendement et une chance de lutter contre le réchauffement climatique. Ses détracteurs pointent la dangerosité potentielle des centrales nucléaires et le problème de l'élimination des déchets nucléaires.",
+            "link": "https://perdu.com",
+            "candidates": ["yja", "bha"]
+        }
+    ]
+}
